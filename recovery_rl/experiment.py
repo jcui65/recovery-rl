@@ -35,13 +35,13 @@ def npy_to_gif(im_list, filename, fps=4):
 def process_obs(obs, env_name):
     if 'extraction' in env_name:
         obs = cv2.resize(obs, (64, 48), interpolation=cv2.INTER_AREA)
-    im = np.transpose(obs, (2, 0, 1))
+    im = np.transpose(obs, (2, 0, 1))#64*48 or 64*64?
     return im
 
 
 class Experiment:
     def __init__(self, exp_cfg):
-        self.exp_cfg = exp_cfg
+        self.exp_cfg = exp_cfg#experiment configuration
         # Logging setup
         self.logdir = os.path.join(
             self.exp_cfg.logdir, '{}_SAC_{}_{}_{}'.format(
@@ -49,7 +49,7 @@ class Experiment:
                 self.exp_cfg.env_name, self.exp_cfg.policy,
                 self.exp_cfg.logdir_suffix))
         if not os.path.exists(self.logdir):
-            os.makedirs(self.logdir)
+            os.makedirs(self.logdir)#similar things
         print("LOGDIR: ", self.logdir)
         pickle.dump(self.exp_cfg,
                     open(os.path.join(self.logdir, "args.pkl"), "wb"))
@@ -78,7 +78,7 @@ class Experiment:
         )
 
         # Get multiplier schedule for RSPO
-        if self.exp_cfg.nu_schedule:
+        if self.exp_cfg.nu_schedule:#RSPO is a baseline method for RRL
             self.nu_schedule = linear_schedule(self.exp_cfg.nu_start,
                                                self.exp_cfg.nu_end,
                                                self.exp_cfg.num_eps)
